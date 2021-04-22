@@ -2,10 +2,15 @@ type Query {
   car: String!
   cars: [String!]!
   carDetails(id: Int!): [CarDetails]
+  user(name: String): User!
 }
 
 type CarDetails {
   id: Int!
+  name: String
+}
+
+type User {
   name: String
 }
 

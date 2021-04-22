@@ -3,6 +3,20 @@ const router = express.Router();
 var { graphqlHTTP } = require("express-graphql");
 var { buildSchema } = require("graphql");
 const fs = require("fs");
+const mongoose = require("mongoose");
+const User = require("./user");
+require("dotenv").config();
+
+const uri = process.env.MONGO_URI;
+
+mongoose.connect(uri, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => {
+  console.log("DB connected")
+}).catch((err) => {
+  console.log(err)
+})
 
 const app = express();
 
@@ -44,6 +58,15 @@ const root = {
   carDetails: ({ id }) => {
     return carDetailsa.filter((el) => el.id === id);
   },
+  user: ({ name }) => {
+    const user1 = new User();
+    user1.save().then(res => {
+      console.log(res)
+      return {...res._doc};
+    }).catch(err => {
+      console.log(err)
+    throw err});
+  }
 };
 
 // const root = {
